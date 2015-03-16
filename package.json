@@ -1,0 +1,23 @@
+{
+  "name": "USPTOparse",
+  "version": "0.0.1",
+  "description": "dailytrademarks website USPTO parser",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "dailytrademarks.com"
+  },
+  "bin": {
+    "USPTOparse": "USPTOparse.js"
+  },
+  "author": "Jelmer Tiete",
+  "license": "ISC",
+  "private": true,
+  "dependencies": {
+    "commander": "^2.7.1",
+    "unzip": "^0.1.11"
+  }
+}
