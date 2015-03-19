@@ -4,11 +4,15 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Daily Trademarks</title>
 <link rel="stylesheet" href="style.css" />
+<link rel="stylesheet" href="magnific-popup.css">
 <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
 <script src="isotope.pkgd.min.js"></script>
+<script src="jquery.magnific-popup.min.js"></script>
+<script src="jquery.lazyloadxt.min.js"></script>
+
 </head>
 
-<body onload="setInterval('scroll();', 250);">
+<body>
 <div id="header">Daily trademark applications</div>
 <div class="container">
 <!-- <div class="img_tile"><span class="helper"></span><a href="images/86559867-00000002.JPG"><img src="images/86559867-00000002.JPG"></a></div> 
@@ -24,83 +28,74 @@
 <div class="img_tile"><span class="helper"></span><a href="images/86559867-00000002.JPG"><img src="images/86559867-00000002.JPG"></a></div>
 <div class="img_tile"><span class="helper"></span><a href="images/86559867-00000002.JPG"><img src="images/86559867-00000002.JPG"></a></div> -->
 </div>
+<div id="marker"></div>
 </body>
 </html>
 <script>
 
 var $container = $('.container');
-// init
+var n = 0;
+
 $container.isotope({
-  // options
   itemSelector: '.img_tile',
     masonry: {
       isFitWidth: true
     }
 });
 
-var contentHeight = 200;
-var pageHeight = document.documentElement.clientHeight;
-var scrollPosition;
-var n = 1;
-var xmlhttp;
+$(document).ready(function() {
 
-function putImages(){
-
-	if (xmlhttp.readyState==4)
-	  {
-		  if(xmlhttp.responseText){
-			 var resp = xmlhttp.responseText.replace("\r\n", "");
-			 var files = resp.split(";");
-			  // var j = 0;
-			  for(i=0; i<files.length; i++){
-				  if(files[i] != ""){
-				  	var elem = $('<div class="img_tile"><span class="helper"></span><a href="images/'+files[i]+'"><img src="images/'+files[i]+'" /></a></div>');
-				  	// document.getElementById("container").appendChild( elem );
-				 	$container.append(elem);
+	$('#marker').on('lazyshow', function () {
+        $.ajax({
+			'url' : "getImages.php?n="+n,
+			'type' : 'GET',
+			'data' : n,
+			'success' : function(data) {
+				if (data == "success") {
+			    	alert('request sent!');
+			    }
+			}
+		}).done(function (responseText) {
+			var resp = responseText.replace("\r\n", "");
+			var files = resp.split(";");
+			for(i=0; i<files.length; i++){
+			  	if(files[i] != ""){
+			  		var elem = $('<div class="img_tile"><span class="helper"></span><a href="images/'+files[i]+'" style="width:190px;height:190px;"><img src="images/'+files[i]+'" style="max-height: 190px; max-width: 190px;" /></a></div>');
+			 		$container.append(elem);
 					$container.isotope( 'appended',elem);
 					$container.isotope('layout');
-					 // j++;
+			  	}
+		  	}
+		  	n += 25; //Make sure you also change this in the php
+            $(window).lazyLoadXT();
+            $('#marker').lazyLoadXT({visibleOnly: false, checkDuplicates: false});
+        });
+    }).lazyLoadXT({visibleOnly: false});
 
-					 // if(j == 5 || j == 10 || j == 15)
-						//   document.getElementById("container").innerHTML += '<br />';
-					 //  else if(j == 20){
-						//   document.getElementById("container").innerHTML += '<p>'+(n-1)+" Images Displayed | <a href='#header'>top</a></p><br />";
-						//   j = 0;
-					 //  }
-				  }
-			  }
-		  }
-	  }
-}
-
-
-function scroll(){
-
-	if(navigator.appName == "Microsoft Internet Explorer")
-		scrollPosition = document.documentElement.scrollTop;
-	else
-		scrollPosition = window.pageYOffset;
-
-	if((contentHeight - pageHeight - scrollPosition) < 100){
-
-		if(window.XMLHttpRequest)
-			xmlhttp = new XMLHttpRequest();
-		else
-			if(window.ActiveXObject)
-				xmlhttp = new ActiveXObject("Microsoft.XMLHTTP");
-			else
-				alert ("Bummer! Your browser does not support XMLHTTP!");
-
-		var url="getImages.php?n="+n;
-
-		xmlhttp.open("GET",url,true);
-		xmlhttp.send();
-
-		n += 20;
-		xmlhttp.onreadystatechange=putImages;
-		contentHeight += 200;
-	}
-}
+	$container.magnificPopup({
+		delegate: 'a',
+		type: 'image',
+		closeOnContentClick: false,
+		closeBtnInside: false,
+		mainClass: 'mfp-with-zoom mfp-img-mobile',
+		image: {
+			verticalFit: true,
+			titleSrc: function(item) {
+				return item.el.attr('title') + ' &middot; <a class="image-source-link" href="'+item.el.attr('data-source')+'" target="_blank">image source</a>';
+			}
+		},
+		gallery: {
+			enabled: true
+		},
+		zoom: {
+			enabled: true,
+			duration: 300, // don't forget to change the duration also in CSS
+			opener: function(element) {
+				return element.find('img');
+			}
+		}
+	})
+});
 
 </script>
 

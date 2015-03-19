@@ -1,0 +1,81 @@
+@charset "utf-8";
+/* CSS Document */
+
+body{
+	background:#FFF;
+	color:#666;
+}
+
+a:active, a:focus { outline-style: none; -moz-outline-style:none; }
+
+#header{
+	font-family:Arial, Helvetica, sans-serif;
+	font-size:24px;
+	font-weight:bold;
+	text-align:left;
+	text-indent:35px;
+	margin: 0 auto;
+	width:800px;
+	margin-bottom:10px;
+}
+
+.container{
+	margin: 0 auto;
+	text-align:center;
+}
+
+.img_tile{
+	width: 200px;
+	height: 200px;
+	margin: 1px;
+	border: 2px solid #444;
+	-moz-border-radius: 5px;
+	-webkit-border-radius: 10px;
+	background:#FFF;
+  	float: left;
+  	border-color: hsla(0, 0%, 0%, 0.5);
+  	border-radius: 10px;
+}
+
+.helper {
+    display: inline-block;
+    height: 100%;
+    vertical-align: middle;
+}
+
+img{
+    vertical-align: middle;
+}
+
+.img_tile:hover{
+	border-color:#555;
+	-moz-box-shadow: 0px 0px 15px #111;
+	-webkit-box-shadow: 0px 0px 15px #111;
+}
+
+.image-source-link {
+	color: #98C3D1;
+}
+
+.mfp-with-zoom .mfp-container,
+.mfp-with-zoom.mfp-bg {
+	opacity: 0;
+	-webkit-backface-visibility: hidden;
+	/* ideally, transition speed should match zoom duration */
+	-webkit-transition: all 0.3s ease-out; 
+	-moz-transition: all 0.3s ease-out; 
+	-o-transition: all 0.3s ease-out; 
+	transition: all 0.3s ease-out;
+}
+
+.mfp-with-zoom.mfp-ready .mfp-container {
+		opacity: 1;
+}
+.mfp-with-zoom.mfp-ready.mfp-bg {
+		opacity: 0.8;
+}
+
+.mfp-with-zoom.mfp-removing .mfp-container, 
+.mfp-with-zoom.mfp-removing.mfp-bg {
+	opacity: 0;
+}

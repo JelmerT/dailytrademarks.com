@@ -1,6 +1,6 @@
 #!/usr/bin/env python
 
-# Copyright (c) 2014, Jelmer Tiete <jelmer@tiete.be>.
+# Copyright (c) 2015, Jelmer Tiete <jelmer@tiete.be>.
 # All rights reserved.
 #
 # Redistribution and use in source and binary forms, with or without
@@ -30,20 +30,43 @@
 import os, zipfile, fnmatch
 import xml.etree.ElementTree as ET
 import shutil
+import requests
+import datetime as dt
 
-zf_name = 'hr150313.zip'
+def download_file(url):
+    local_filename = url.split('/')[-1]
+    # NOTE the stream=True parameter
+    r = requests.get(url, stream=True)
+    with open(local_filename, 'wb') as f:
+        for chunk in r.iter_content(chunk_size=1024): 
+            if chunk: # filter out keep-alive new chunks
+                f.write(chunk)
+                f.flush()
+    return local_filename
+
+
+print ('Downloading archive')
+
+yest_date = dt.datetime.utcnow() - dt.timedelta( days = 2 )
+url_filename = 'hr'+yest_date.strftime("%y%m%d")+'.zip'
+url = 'http://storage.googleapis.com/trademarks/application_images/2015/'+url_filename
+
+zf_name = download_file(url)
 
 zf = zipfile.ZipFile(zf_name, 'r')
 # print zf.namelist()
 
 print ('Extracting archive')
 
-# for name in zf.namelist():
-#   (dirname, filename) = os.path.split(name)
-#   print "Decompressing " + filename + " on " + dirname
-#   if not os.path.exists(os.path.join(os.path.basename(os.path.splitext(zf_name)[0]), dirname)):
-#     os.makedirs(os.path.join(os.path.basename(os.path.splitext(zf_name)[0]), dirname))
-#   zf.extract(name, os.path.join(os.path.basename(os.path.splitext(zf_name)[0]), '.'))
+for name in zf.namelist():
+  (dirname, filename) = os.path.split(name)
+  # print "Decompressing " + filename + " on " + dirname
+  if not os.path.exists(os.path.join(os.path.basename(os.path.splitext(zf_name)[0]), dirname)):
+    os.makedirs(os.path.join(os.path.basename(os.path.splitext(zf_name)[0]), dirname))
+  zf.extract(name, os.path.join(os.path.basename(os.path.splitext(zf_name)[0]), '.'))
+
+print ('Deleting archive')
+os.remove(os.path.join('.',zf_name))
 
 print ('Looking for XML files')
 
@@ -56,9 +79,9 @@ for root, dirnames, filenames in os.walk(os.path.basename(os.path.splitext(zf_na
    xml_filelist.append(os.path.join(root, f))
 # print xml_filelist
 
-print ('Reading XML files and copying images')
+print ('Parsing XML files and copying images')
 
-os.makedirs('./images')
+os.makedirs('./images_new')
 
 for xml_file in xml_filelist:
 	tree = ET.parse(xml_file)
@@ -68,28 +91,18 @@ for xml_file in xml_filelist:
 		# print 'serial:', serial_number.text
 		prev_image_name = []
 		for image_tag in root.iterfind('.//file-name'):
-			if image_tag.text == '00000002.JPG':
+			if image_tag.text != prev_image_name:
 				prev_image_name = image_tag.text
 				image_path = os.path.join(os.path.dirname(xml_file), image_tag.text)
-				new_image_path = os.path.join('./images', serial_number.text+'-'+image_tag.text)
+				new_image_path = os.path.join('./images_new', serial_number.text+'-'+image_tag.text)
 				shutil.copy(image_path, new_image_path)
 			else:
 				# print 'duplicate'
 				break
 
 print ('Deleting extracted archive')
-
 # shutil.rmtree(os.path.join('.',os.path.basename(os.path.splitext(zf_name)[0])))
 
-# for filename in [ '865599/86559956/00000001.XML', 'notthere.txt' ]:
-#     try:
-#         data = zf.read(filename)
-#     except KeyError:
-#         print 'ERROR: Did not find %s in zip file' % filename
-#     else:
-#         print filename, ':'
-#         print repr(data)
-#     print
-
-# tree = ET.parse('country_data.xml')
-# root = tree.getroot()
+print ('Replacing image folder with new one')
+shutil.rmtree('./images')
+os.rename('./images_new','./images')
