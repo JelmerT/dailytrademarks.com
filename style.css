@@ -2,7 +2,7 @@
 /* CSS Document */
 
 body{
-	background:#222;
+	background:#FFF;
 	color:#666;
 }
 
@@ -17,7 +17,7 @@ body{
 	margin-bottom:10px;
 }
 
-hr{
+/*hr{
 	margin: 20px;
 	border:none;
 	border-top: 1px solid #111;
@@ -34,29 +34,26 @@ p{
 
 a{
 	color:#444;
-}
+}*/
 
 
 
-#container{
+.container{
 	margin: 0 auto;
-	width: 100%;
-	border:1px solid #333;
-	-moz-border-radius: 10px;
-	-webkit-border-radius: 10px;
-	font-family:Verdana, Geneva, sans-serif;
 	text-align:center;
 }
 
 .img_tile{
 	width: 200px;
 	height: 200px;
-	float: left;
 	margin: 1px;
-	border: 5px solid #444;
+	border: 2px solid #444;
 	-moz-border-radius: 5px;
 	-webkit-border-radius: 10px;
-	background: #FFF;
+
+  float: left;
+  border-color: hsla(0, 0%, 0%, 0.5);
+  border-radius: 10px;
 }
 
 .helper {
@@ -67,11 +64,11 @@ a{
 
 img{
     vertical-align: middle;
-    max-height: 180px;
-    max-width: 180px;
+    max-height: 190px;
+    max-width: 190px;
 }
 
-img:hover{
+.img_tile:hover{
 	border-color:#555;
 	-moz-box-shadow: 0px 0px 15px #111;
 	-webkit-box-shadow: 0px 0px 15px #111;

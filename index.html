@@ -4,16 +4,40 @@
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>Daily Trademarks</title>
 <link rel="stylesheet" href="style.css" />
+<script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
+<script src="isotope.pkgd.min.js"></script>
 </head>
 
 <body onload="setInterval('scroll();', 250);">
 <div id="header">Daily trademark applications</div>
-<div id="container">
-
+<div class="container">
+<!-- <div class="img_tile"><span class="helper"></span><a href="images/86559867-00000002.JPG"><img src="images/86559867-00000002.JPG"></a></div> 
+<div class="img_tile"><span class="helper"></span><a href="images/86559867-00000002.JPG"><img src="images/86559867-00000002.JPG"></a></div>
+<div class="img_tile"><span class="helper"></span><a href="images/86559867-00000002.JPG"><img src="images/86559867-00000002.JPG"></a></div>
+<div class="img_tile"><span class="helper"></span><a href="images/86559867-00000002.JPG"><img src="images/86559867-00000002.JPG"></a></div>
+<div class="img_tile"><span class="helper"></span><a href="images/86559867-00000002.JPG"><img src="images/86559867-00000002.JPG"></a></div>
+<div class="img_tile"><span class="helper"></span><a href="images/86559867-00000002.JPG"><img src="images/86559867-00000002.JPG"></a></div>
+<div class="img_tile"><span class="helper"></span><a href="images/86559867-00000002.JPG"><img src="images/86559867-00000002.JPG"></a></div>
+<div class="img_tile"><span class="helper"></span><a href="images/86559867-00000002.JPG"><img src="images/86559867-00000002.JPG"></a></div>
+<div class="img_tile"><span class="helper"></span><a href="images/86559867-00000002.JPG"><img src="images/86559867-00000002.JPG"></a></div>
+<div class="img_tile"><span class="helper"></span><a href="images/86559867-00000002.JPG"><img src="images/86559867-00000002.JPG"></a></div>
+<div class="img_tile"><span class="helper"></span><a href="images/86559867-00000002.JPG"><img src="images/86559867-00000002.JPG"></a></div>
+<div class="img_tile"><span class="helper"></span><a href="images/86559867-00000002.JPG"><img src="images/86559867-00000002.JPG"></a></div> -->
 </div>
 </body>
 </html>
 <script>
+
+var $container = $('.container');
+// init
+$container.isotope({
+  // options
+  itemSelector: '.img_tile',
+    masonry: {
+      isFitWidth: true
+    }
+});
+
 var contentHeight = 200;
 var pageHeight = document.documentElement.clientHeight;
 var scrollPosition;
@@ -27,11 +51,15 @@ function putImages(){
 		  if(xmlhttp.responseText){
 			 var resp = xmlhttp.responseText.replace("\r\n", "");
 			 var files = resp.split(";");
-			  var j = 0;
+			  // var j = 0;
 			  for(i=0; i<files.length; i++){
 				  if(files[i] != ""){
-					 document.getElementById("container").innerHTML += '<div class="img_tile"><span class="helper"></span><a href="images/'+files[i]+'"><img src="images/'+files[i]+'" /></a></div>';
-					 j++;
+				  	var elem = $('<div class="img_tile"><span class="helper"></span><a href="images/'+files[i]+'"><img src="images/'+files[i]+'" /></a></div>');
+				  	// document.getElementById("container").appendChild( elem );
+				 	$container.append(elem);
+					$container.isotope( 'appended',elem);
+					$container.isotope('layout');
+					 // j++;
 
 					 // if(j == 5 || j == 10 || j == 15)
 						//   document.getElementById("container").innerHTML += '<br />';
