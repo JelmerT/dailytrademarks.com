@@ -55,7 +55,7 @@ except Exception:
 
 print ('Downloading archive:')
 
-yest_date = dt.datetime.utcnow() - dt.timedelta( days = 2 )
+yest_date = dt.datetime.utcnow() - dt.timedelta( days = 3 )
 url_filename = 'hr'+yest_date.strftime("%y%m%d")+'.zip'
 print(url_filename)
 url = 'http://storage.googleapis.com/trademarks/application_images/2015/'+url_filename
