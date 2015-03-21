@@ -10,7 +10,7 @@ app.get('/trademark', tm.findAll);
 app.get('/', site.index);
 
 app.use(function(req, res, next) {
-  res.send(404, 'Sorry cant find that!');
+  res.status(404).send('Sorry cant find that!');
 });
 
 app.listen(3000);
