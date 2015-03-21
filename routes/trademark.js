@@ -20,8 +20,7 @@ exports.findBySerial = function(req, res) {
     console.log('findBySerial: ' + serial);
     db.collection('trademark', function(err, collection) {
         collection.findOne({'serial': serial}, function(err, item) {
-            console.log(item, err);
-            res.jsonp(item);
+            res.json(item);
         });
     });
 };
@@ -32,24 +31,24 @@ exports.findBySerial = function(req, res) {
 //     db.collection('trademark', function(err, collection) {
 //         collection.find({'managerId': id}).toArray(function(err, items) {
 //             console.log(items);
-//             res.jsonp(items);
+//             res.json(items);
 //         });
 //     });
 // };
 
 exports.findAll = function(req, res) {
-    var amount = req.query["amount"];
-    var start = req.query["start"];
+    var amount = parseInt(req.query.amount,10);
+    var start = parseInt(req.query.start,10);
     db.collection('trademark', function(err, collection) {
-        if (amount) {
-            // collection.find({"fullName": new RegExp(name, "i")}).toArray(function(err, items) {
-            //     res.jsonp(items);
-            // });
-            console.log('Still need to implement amount var');
-        } else {
-            collection.find().toArray(function(err, items) {
-                res.jsonp(items);
+        if (req.query.amount && req.query.start) {
+            collection.find().toArray(function(err, items) { //TODO make sure we're getting trademarks
+                res.json(items.slice(+start, start+amount));
             });
+        } else {
+            res.status(400).send('Bad Request');
+            // collection.find().toArray(function(err, items) {
+            //     res.json(items);
+            // });
         }
     });
 };

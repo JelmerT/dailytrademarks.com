@@ -48,46 +48,48 @@ def download_file(url):
 # try removing leftovers from prev attempts
 try:
 	shutil.rmtree('./images_new')
+	##os.remove("./hr*")
 except Exception:
 	pass
 
 
-# print ('Downloading archive')
+print ('Downloading archive:')
 
-# yest_date = dt.datetime.utcnow() - dt.timedelta( days = 2 )
-# url_filename = 'hr'+yest_date.strftime("%y%m%d")+'.zip'
-# url = 'http://storage.googleapis.com/trademarks/application_images/2015/'+url_filename
+yest_date = dt.datetime.utcnow() - dt.timedelta( days = 2 )
+url_filename = 'hr'+yest_date.strftime("%y%m%d")+'.zip'
+print(url_filename)
+url = 'http://storage.googleapis.com/trademarks/application_images/2015/'+url_filename
 
-# zf_name = download_file(url)
+zf_name = download_file(url)
 
-# zf = zipfile.ZipFile(zf_name, 'r')
-# # print zf.namelist()
+zf = zipfile.ZipFile(zf_name, 'r')
+# print zf.namelist()
 
-# print ('Extracting archive')
+print ('Extracting archive')
 
-# for name in zf.namelist():
-#   (dirname, filename) = os.path.split(name)
-#   # print "Decompressing " + filename + " on " + dirname
-#   if not os.path.exists(os.path.join(os.path.basename(os.path.splitext(zf_name)[0]), dirname)):
-#     os.makedirs(os.path.join(os.path.basename(os.path.splitext(zf_name)[0]), dirname))
-#   zf.extract(name, os.path.join(os.path.basename(os.path.splitext(zf_name)[0]), '.'))
+for name in zf.namelist():
+  (dirname, filename) = os.path.split(name)
+  # print "Decompressing " + filename + " on " + dirname
+  if not os.path.exists(os.path.join(os.path.basename(os.path.splitext(zf_name)[0]), dirname)):
+    os.makedirs(os.path.join(os.path.basename(os.path.splitext(zf_name)[0]), dirname))
+  zf.extract(name, os.path.join(os.path.basename(os.path.splitext(zf_name)[0]), '.'))
 
 print ('Deleting archive')
 # remove the archive
-# os.remove(zf_name)
+os.remove(zf_name)
 
 print ('Looking for XML files')
 
 filetypes = ("*.xml","*.XML")
 xml_filelist = []
 
-for root, dirnames, filenames in os.walk(os.path.basename(os.path.splitext('hr150317.zip')[0])): #change to zf_name
+for root, dirnames, filenames in os.walk(os.path.basename(os.path.splitext(zf_name)[0])): #change to zf_name
  for ft in filetypes:
   for f in fnmatch.filter(filenames, ft):
    xml_filelist.append(os.path.join(root, f))
 # print xml_filelist
 
-print ('connecting to DB')
+print ('Connecting to DB')
 
 # Connection to Mongo DB
 try:
@@ -121,7 +123,7 @@ for xml_file in xml_filelist:
   			pass #no name found
   		#add fee amount to DB entry
 		try:
-			data['fee'] = next(fee for fee in root.iterfind('.//fee-types/total-amount')).text
+			data['fee'] = int(next(fee for fee in root.iterfind('.//fee-types/total-amount')).text)
 		except Exception:
   			pass #no fee found
 		#add the images to DB entry
@@ -138,12 +140,22 @@ for xml_file in xml_filelist:
 				break
 		data['image'] = image #add list of images to entry
 		data['num_images'] = len(image)	#add amount of images to entry
-		print data
+		# print data
 		tm_id = tm.insert_one(data).inserted_id
+# adding meta-data to DB
+data = {}
+data['db_date'] = yest_date.strftime("%y%m%d")
+data["db_num_records"] = tm.count()
+data["db_total_fee"] = 0 #TODO
+data["db_total_images"] = 0 #TODO
+tm.insert_one(data)
 
 print ('Deleting extracted archive')
-# shutil.rmtree(os.path.join('.',os.path.basename(os.path.splitext(zf_name)[0])))
+shutil.rmtree(os.path.join('.',os.path.basename(os.path.splitext(zf_name)[0])))
 
 print ('Replacing image folder with new one')
-shutil.rmtree('./images')
+try:
+	shutil.rmtree('./images')
+except Exception:
+	pass
 os.rename('./images_new','./images')

@@ -37,6 +37,12 @@ a:active, a:focus { outline-style: none; -moz-outline-style:none; }
   	border-radius: 10px;
 }
 
+.img_tile_overlay{
+	position: absolute;
+	bottom: 0;
+	color: #FF3030;
+}
+
 .helper {
     display: inline-block;
     height: 100%;
@@ -47,14 +53,29 @@ img{
     vertical-align: middle;
 }
 
-.img_tile:hover{
+.img_tile:hover {
 	border-color:#555;
 	-moz-box-shadow: 0px 0px 15px #111;
 	-webkit-box-shadow: 0px 0px 15px #111;
 }
 
+/*Lazyload stuff*/
+/*spinner*/
+.lazy-hidden {
+	background:url(loading.gif) 50% 50% no-repeat;
+	width: 50px;
+	height: 50px;
+}
+#marker {
+	visibility: hidden;
+}
+/*fade in*/
+/*.lazy-hidden{opacity:0}.lazy-loaded{-webkit-transition:opacity .3s;-moz-transition:opacity .3s;-ms-transition:opacity .3s;-o-transition:opacity .3s;transition:opacity .3s;opacity:1}*/
+
+
+/*Maginific popup stuff*/
 .image-source-link {
-	color: #98C3D1;
+	color: #FF3030;
 }
 
 .mfp-with-zoom .mfp-container,

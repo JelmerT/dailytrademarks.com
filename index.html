@@ -8,7 +8,7 @@
 <script src="//code.jquery.com/jquery-1.11.2.min.js"></script>
 <script src="js/isotope.pkgd.min.js"></script>
 <script src="js/jquery.magnific-popup.min.js"></script>
-<script src="js/jquery.lazyloadxt.min.js"></script>
+<script src="//cdn.jsdelivr.net/jquery.lazyloadxt/1.0.0/jquery.lazyloadxt.min.js"></script>
 </head>
 
 <body>
@@ -16,11 +16,11 @@
 <div class="container"></div>
 <div id="marker"></div>
 </body>
-</html>
 <script>
 
 var $container = $('.container');
-var n = 0;
+var start = 0;
+var amount = 50;
 
 $container.isotope({
   itemSelector: '.img_tile',
@@ -29,33 +29,30 @@ $container.isotope({
     }
 });
 
+$.extend($.lazyLoadXT, {
+  edgeY:  700,
+  srcAttr: 'data-src'
+});
+
 $(document).ready(function() {
 
 	$('#marker').on('lazyshow', function () {
-        $.ajax({
-			'url' : "getImages.php?n="+n,
-			'type' : 'GET',
-			'data' : n,
-			'success' : function(data) {
-				if (data == "success") {
-			    	alert('request sent!');
-			    }
-			}
-		}).done(function (responseText) {
-			var resp = responseText.replace("\r\n", "");
-			var files = resp.split(";");
-			for(i=0; i<files.length; i++){
-			  	if(files[i] != ""){
-			  		var elem = $('<div class="img_tile"><span class="helper"></span><a href="images/'+files[i]+'" style="width:190px;height:190px;"><img src="images/'+files[i]+'" style="max-height: 190px; max-width: 190px;" /></a></div>');
-			 		$container.append(elem);
-					$container.isotope( 'appended',elem);
-					$container.isotope('layout');
-			  	}
-		  	}
-		  	n += 25; //Make sure you also change this in the php
+		$.getJSON( '/trademark', {
+			amount: amount,
+		    start: start
+		}).done(function( data ) {
+		    $.each( data, function( i, item ) {
+		    	//TODO check for correct answer
+		    	var image = item.serial+'-'+item.image[0];
+				var elem = $('<a href="images/'+image+'"  data-source="/trademark/'+item.serial+'" title="'+item.name+'" style="width:190px;height:190px;"><div class="img_tile"><div class="img_tile_overlay">'+item.serial+' - $ '+item.fee+'</div><span class="helper"></span><img data-src="images/'+image+'" style="max-height: 190px; max-width: 190px;" /></div></a>');
+				$container.prepend(elem);
+				$container.isotope( 'appended',elem);
+				$container.isotope('layout');
+		    });
+			start += amount;
             $(window).lazyLoadXT();
             $('#marker').lazyLoadXT({visibleOnly: false, checkDuplicates: false});
-        });
+		});
     }).lazyLoadXT({visibleOnly: false});
 
 	$container.magnificPopup({
@@ -81,7 +78,18 @@ $(document).ready(function() {
 			}
 		}
 	})
+
+	$('#header').click(function(){ 
+         $.ajax({
+             type: "GET",
+             dataType: "json",
+             url: "/trademark/86564525",
+             success: function(data){
+                alert(data);
+             }
+         });
+    });
 });
 
 </script>
-
+</html>

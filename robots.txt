@@ -1,0 +1,5 @@
+# For scraping or access to the trademark data, please contact Jelmer Tiete - @jelmt
+
+User-agent: *
+Disallow: /images/
+Disallow: /trademarks/
