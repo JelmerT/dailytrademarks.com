@@ -1,0 +1,13 @@
+
+div(class = ['ajax-text-and-image', 'white-popup-block'])
+	div(class="ajcol")
+		div(class="fotorama", data-nav="thumbs")
+			each picture in image
+				img(src="/images/#{serial}-#{picture}")
+	div(class="ajcol", style="line-height: 1.231;")
+		div(style="padding: 1em")
+			h1!=name
+			p The fee paid for this trademark is $ #{fee}
+			p Trademark serial number: #{serial}
+			a(href='/trademark/#{serial}') Share this trademark
+	div(style="clear:both; line-height: 0;")

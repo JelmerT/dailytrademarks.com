@@ -1,13 +1,18 @@
 var express = require('express'),
-    tm = require('./routes/trademark'),
     site = require('./routes/site');
 
 var app = express();
 app.enable('trust proxy');
 
-app.get('/trademark/:serial', tm.findBySerial);
-app.get('/trademark', tm.findAll);
+app.set('views', './views')
+app.set('view engine', 'jade')
+
 app.get('/', site.index);
+app.get('/info', site.info);
+app.get('/trademark', site.findAll);
+app.get('/trademark/:serial', site.findBySerial);
+app.get('/trademark/popup/:serial', site.createPopup);
+
 
 app.use(function(req, res, next) {
   res.status(404).send('Sorry cant find that!');

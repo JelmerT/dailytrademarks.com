@@ -1,10 +1,11 @@
 {
-    "name": "trademark-directory-api",
-    "description": "Trademark Directory API",
-    "version": "0.0.1",
-    "private": true,
-    "dependencies": {
-        "express": "*",
-        "mongodb": "*"
-    }
+  "name": "trademark-directory-api",
+  "description": "Trademark Directory API",
+  "version": "0.0.1",
+  "private": true,
+  "dependencies": {
+    "express": "*",
+    "jade": "^1.9.2",
+    "mongodb": "*"
+  }
 }
