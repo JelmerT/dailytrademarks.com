@@ -10,13 +10,17 @@ MongoClient.connect('mongodb://127.0.0.1:27017/trademarkDB', function(err, trade
 exports.index = function(req, res){
 	db.collection('trademark', function(err, collection) {
         collection.findOne({ db_date: { $exists: true } }, function(err, item) {
-			res.render('index', { date:item.db_date});
+			res.render('index', { date:item.db_date, total:(item.db_num_records)-1});
         });
     });
 };
 
 exports.info = function(req, res){
-  res.sendFile('info.html',{ root: path.join(__dirname, '../.') });
+    db.collection('trademark', function(err, collection) {
+        collection.findOne({ db_date: { $exists: true } }, function(err, item) {
+            res.json(item);
+        });
+    });
 };
 
 exports.findBySerial = function(req, res) {

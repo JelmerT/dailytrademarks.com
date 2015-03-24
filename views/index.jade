@@ -12,7 +12,9 @@ html
 		script(src="//cdn.jsdelivr.net/jquery.lazyloadxt/1.0.0/jquery.lazyloadxt.min.js")
 		script(src="http://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.3/fotorama.js")
 	body
-		div(id="header") See What People Want To Trademark Today (db of: #{date})
+		div(id="header" style='white-space:pre;') 
+			|See What People Want To Trademark Today
+			|date: #{date} Total: #{total}
 		div(class="container")
 		div(id="marker")
 		script(src="js/main.js")

@@ -106,6 +106,9 @@ print ('Parsing XML files and copying images')
 
 os.makedirs('./images_new')
 
+total_images = 0
+total_fees = 0
+
 for xml_file in xml_filelist:
 	tree = ET.parse(xml_file)
 	root = tree.getroot()
@@ -123,7 +126,9 @@ for xml_file in xml_filelist:
   			pass #no name found
   		#add fee amount to DB entry
 		try:
-			data['fee'] = int(next(fee for fee in root.iterfind('.//fee-types/total-amount')).text)
+			fee = int(next(fee for fee in root.iterfind('.//fee-types/total-amount')).text)
+			data['fee'] = fee
+			total_fees =+ fee
 		except Exception:
   			pass #no fee found
 		#add the images to DB entry
@@ -138,16 +143,18 @@ for xml_file in xml_filelist:
 			else:
 				# print 'duplicate'
 				break
+		data['url'] = 0
 		data['image'] = image #add list of images to entry
 		data['num_images'] = len(image)	#add amount of images to entry
+		total_images =+ len(image)
 		# print data
 		tm_id = tm.insert_one(data).inserted_id
 # adding meta-data to DB
 data = {}
 data['db_date'] = yest_date.strftime("%y%m%d")
 data["db_num_records"] = tm.count()
-data["db_total_fee"] = 0 #TODO
-data["db_total_images"] = 0 #TODO
+data["db_total_fees"] = total_fees
+data["db_total_images"] = total_images
 tm.insert_one(data)
 
 print ('Deleting extracted archive')

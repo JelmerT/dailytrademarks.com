@@ -9,5 +9,8 @@ div(class = ['ajax-text-and-image', 'white-popup-block'])
 			h1!=name
 			p The fee paid for this trademark is $ #{fee}
 			p Trademark serial number: #{serial}
-			a(href='/trademark/#{serial}') Share this trademark
+			p
+				a(href='/trademark/#{serial}', target="_blank") Share this trademark
+			p
+				a(href='http://tsdr.uspto.gov/#caseNumber=#{serial}&caseType=SERIAL_NO&searchType=statusSearch', target="_blank") View this at USPTO
 	div(style="clear:both; line-height: 0;")
