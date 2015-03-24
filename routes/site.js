@@ -1,21 +1,18 @@
-var MongoClient = require('mongodb').MongoClient,
-    Server = require('mongodb').Server,
-    path = require('path'),
+var MongoClient = require('mongodb').MongoClient;
+var path = require('path'),
     db;
 
-var mongoClient = new MongoClient(new Server('localhost', 27017));
-mongoClient.open(function(err, mongoClient) {
-    db = mongoClient.db("trademarkDB");
-    db.collection('trademark', {strict:true}, function(err, collection) {
-        if (err) {
-            console.log("The 'trademark' collection doesn't exist. Creating it with sample data...");
-            populateDB();
-        }
-    });
+MongoClient.connect('mongodb://127.0.0.1:27017/trademarkDB', function(err, trademarkDB) {
+	if(err) throw err;
+	db = trademarkDB;
 });
 
 exports.index = function(req, res){
-	res.render('index', { date:"xxxxxxxx"});
+	db.collection('trademark', function(err, collection) {
+        collection.findOne({ db_date: { $exists: true } }, function(err, item) {
+			res.render('index', { date:item.db_date});
+        });
+    });
 };
 
 exports.info = function(req, res){
@@ -27,6 +24,7 @@ exports.findBySerial = function(req, res) {
     db.collection('trademark', function(err, collection) {
         collection.findOne({'serial': serial}, function(err, item) {
             res.json(item);
+			// db.close();
         });
     });
 };
@@ -49,6 +47,7 @@ exports.findAll = function(req, res) {
         if (req.query.amount && req.query.start) {
             collection.find().toArray(function(err, items) { //TODO make sure we're getting trademarks
                 res.json(items.slice(+start, start+amount));
+                // db.close();
             });
         } else {
             res.status(400).send('Bad Request');
@@ -65,6 +64,7 @@ exports.createPopup = function(req, res){
         collection.findOne({'serial': serial}, function(err, item) {
             res.render('popup', { name: item.name, serial: item.serial, num_images:item.num_images, image:item.image, fee:item.fee});
             // res.json(item);
+            // db.close();
         });
     });
 };
@@ -84,7 +84,7 @@ var populateDB = function() {
         {'serial': '86563935', 'fee': '225', 'name': 'KANNU', 'image': ['00000002.JPG'], 'num_images': 1}
         ];
 
-    db.collection('trademark', function(err, collection) {
+    trademark.collection('trademark', function(err, collection) {
         collection.insert(trademarks, {safe:true}, function(err, result) {});
     });
 
