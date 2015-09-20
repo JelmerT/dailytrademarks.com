@@ -1,4 +1,4 @@
-var $container = $('.container');
+var $container = $('.main-container');
 var start = 0;
 var amount = 50;
 
@@ -24,7 +24,8 @@ $(document).ready(function() {
 		    $.each( data, function( i, item ) {
 		    	//TODO check for correct answer
 		    	var image = item.serial+'-'+item.image[0];
-				var elem = $('<div class="img_tile" serial="'+item.serial+'" style="width:190px;height:190px;"><div class="img_tile_overlay">'+item.serial+'</div><span class="helper"></span><img data-src="images/'+image+'" style="max-height: 190px; max-width: 190px;" /></div>');
+				var elem = $('<div class="img_tile" serial="'+item.serial+'" style="width:190px;height:190px;"><span class="helper"></span><img data-src="images/'+image+'" style="max-height: 190px; max-width: 190px;" /></div>');
+				// <div class="img_tile_overlay">'+item.serial+'</div>
 				$container.prepend(elem);
 				$container.isotope( 'appended',elem);
 				$container.isotope('layout');

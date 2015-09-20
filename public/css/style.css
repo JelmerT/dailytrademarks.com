@@ -2,25 +2,48 @@
 /* CSS Document */
 
 body{
-	background:#FFF;
-	color:#666;
+	margin: 0;
+	padding: 0;
+	/*padding-top: 60px;*/
+	background:#f3f5f6;
+	color:#212124;
 	font-family: "Helvetica Neue",Helvetica,Arial,sans-serif;
 }
 
 a:active, a:focus { outline-style: none; -moz-outline-style:none; }
 
 #header{
-	font-family:Arial, Helvetica, sans-serif;
-	font-size:24px;
-	font-weight:bold;
+/*	font-family:Arial, Helvetica, sans-serif;*/
+	font-size:22px;
+	/*font-weight:bold;*/
 	text-align:left;
 	text-indent:35px;
 	margin: 0 auto;
-	width:800px;
+	width: 100%;
 	margin-bottom:10px;
+	background: #202020;
+	color: #FFF;
+	height: 2em;
+	position:relative
 }
 
-.container{
+#title{
+/*	position:absolute;
+*/	top:50%;
+	/*height:1em;*/
+	margin-top:0.4em;
+	float: left;
+}
+
+#db_info{
+	/*position:absolute;*/
+	top:50%;
+	/*height:10em;*/
+	margin-top:0.4em;
+	float: right;
+}
+
+.main-container{
 	margin: 0 auto;
 	text-align:center;
 }
@@ -28,28 +51,28 @@ a:active, a:focus { outline-style: none; -moz-outline-style:none; }
 .img_tile{
 	width: 200px;
 	height: 200px;
-	margin: 1px;
-	border: 2px solid #444;
-	-moz-border-radius: 5px;
-	-webkit-border-radius: 10px;
+	margin: 0.1em;
+	border: 0.00em solid #0091DC;
+	/*-moz-border-radius: 5px;*/
+	/*-webkit-border-radius: 10px;*/
 	background:#FFF;
   	float: left;
-  	border-color: hsla(0, 0%, 0%, 0.5);
-  	border-radius: 10px;
+  	/*border-color: hsla(0, 0%, 0%, 0.5);*/
+  	/*border-radius: 3px;*/
 }
 
 .img_tile:hover {
-	border-color:#555;
-	-moz-box-shadow: 0px 0px 15px #111;
-	-webkit-box-shadow: 0px 0px 15px #111;
+	/*border-color:#E8F0D6;*/
+	/*-moz-box-shadow: 0px 0px 15px #111;*/
+	/*-webkit-box-shadow: 0px 0px 15px #111;*/
 	cursor: pointer;
 }
 
-.img_tile_overlay{
+/*.img_tile_overlay{
 	position: absolute;
 	bottom: 0;
 	color: #FF3030;
-}
+}*/
 
 .helper {
     display: inline-block;
@@ -63,9 +86,10 @@ img{
 
 /*Popup stuff*/
 .ajax-text-and-image {
-	max-width:800px;
+	width:1000px;
+	height: 700px;
 	margin: 20px auto;
-	background: #FFF;
+	background: #f3f5f6;
 	padding: 0;
 	line-height: 0;
 }
@@ -76,12 +100,12 @@ img{
 .ajcol img {
 	width: 100%; height: auto;
 }
-@media all and (max-width:30em) {
+/*@media all and (max-width:30em) {
 	.ajcol {
 		width: 100%;
 		float:none;
 	}
-}
+}*/
 
 
 /*Lazyload stuff*/
@@ -124,15 +148,15 @@ img{
 }
 
 /* Styles for dialog window */
-.white-popup {
+/*.white-popup {
   position: relative;
   background: #FFF;
   padding: 20px;
   width: auto;
-  max-width: 500px;
+  max-width: 500px;*/
   /*height: 300px;*/
-  margin: 20px auto;
-}
+/*  margin: 20px auto;
+}*/
 
 /**
  * Fade-zoom animation for first dialog

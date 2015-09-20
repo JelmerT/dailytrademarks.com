@@ -5,16 +5,27 @@ html
 		link(rel="stylesheet", href="css/style.css")
 		link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.0.0/magnific-popup.min.css")
 		link(rel="stylesheet", href="https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.3/fotorama.min.css")
+		//- link(rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/css/bootstrap.min.css")
 
 		script(src="https://cdnjs.cloudflare.com/ajax/libs/jquery/1.11.2/jquery.min.js")
 		script(src="https://cdnjs.cloudflare.com/ajax/libs/jquery.isotope/2.1.1/isotope.pkgd.min.js")
 		script(src="https://cdnjs.cloudflare.com/ajax/libs/magnific-popup.js/1.0.0/jquery.magnific-popup.min.js")
 		script(src="https://cdnjs.cloudflare.com/ajax/libs/jquery.lazyloadxt/1.0.5/jquery.lazyloadxt.min.js")
 		script(src="https://cdnjs.cloudflare.com/ajax/libs/fotorama/4.6.3/fotorama.min.js")
+		//- script(src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.4/js/bootstrap.min.js")
 	body
-		div(id="header" style='white-space:pre;') 
-			|See What People Want To Trademark Today
-			|date: #{date} Total: #{total}
-		div(class="container")
+		div(id="header")
+			div(id="title")
+				|Daily Trademarks 
+			div(id="db_info")
+				|date: #{date} Total: #{total}
+			<!-- Fixed navbar -->
+		//- nav(class="navbar navbar-default navbar-fixed-top")
+		//- 	div(class="container-fluid")
+		//- 		div(class="navbar-header")
+		//- 			a(class="navbar-brand" href="#")
+		//- 				img(alt="Brand" src="/kaka.jpg")
+
+		div(class="main-container")
 		div(id="marker")
 		script(src="js/main.js")
