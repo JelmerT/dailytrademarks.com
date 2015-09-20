@@ -55,6 +55,18 @@ try:
 except Exception:
     pass
 
+print ('Connecting to DB')
+
+# Connection to Mongo DB
+try:
+    client = pymongo.MongoClient("localhost", 27017)
+    # remove previous db
+    client.drop_database('trademarkDB')
+    db = client.trademarkDB
+    tm = db.trademark
+    print "Connected successfully"
+except pymongo.errors.ConnectionFailure, e:
+    exit("Could not connect to MongoDB: %s" % e)
 
 print ('Downloading archive:')
 
@@ -91,19 +103,6 @@ for root, dirnames, filenames in os.walk(os.path.basename(os.path.splitext(zf_na
         for f in fnmatch.filter(filenames, ft):
             xml_filelist.append(os.path.join(root, f))
 # print xml_filelist
-
-print ('Connecting to DB')
-
-# Connection to Mongo DB
-try:
-    client = pymongo.MongoClient("localhost", 27017)
-    # remove previous db
-    client.drop_database('trademarkDB')
-    db = client.trademarkDB
-    tm = db.trademark
-    print "Connected successfully"
-except pymongo.errors.ConnectionFailure, e:
-    print "Could not connect to MongoDB: %s" % e
 
 print ('Parsing XML files and copying images')
 
