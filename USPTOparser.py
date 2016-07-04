@@ -73,7 +73,7 @@ print ('Downloading archive:')
 yest_date = dt.datetime.utcnow() - dt.timedelta(days=3)
 url_filename = 'hr'+yest_date.strftime("%y%m%d")+'.zip'
 print(url_filename)
-url = 'http://trademarks.reedtech.com/downloads/TrademarkDailyImages/2015/'+url_filename
+url = 'https://bulkdata.uspto.gov/data3/trademark/application/images/2016/'+url_filename
 
 zf_name = download_file(url)
 
